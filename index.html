@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beamvex — Structural &amp; Miscellaneous Steel Detailing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-deep:#0F1B24;
+    --navy:#17293A;
+    --navy-line:#22384C;
+    --cyan:#8FC1DE;
+    --cyan-dim:#5A87A0;
+    --paper:#EEECE3;
+    --paper-line:#D9D6C9;
+    --ink:#20242A;
+    --ink-soft:#565C63;
+    --amber:#E3A23D;
+    --amber-dim:#B87F2A;
+    --radius:2px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Inter', sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.disp{
+    font-family:'Barlow Condensed', sans-serif;
+    text-transform:uppercase;
+    letter-spacing:0.02em;
+    font-weight:700;
+  }
+  .mono{
+    font-family:'IBM Plex Mono', monospace;
+    letter-spacing:0.03em;
+  }
+  a{color:inherit; text-decoration:none;}
+  img,svg{display:block; max-width:100%;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+
+  /* ===== Title block motif ===== */
+  .titleblock{
+    display:flex; align-items:center; gap:14px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-bottom:18px;
+  }
+  .titleblock::before{
+    content:"";
+    width:22px; height:22px;
+    border:1.5px solid var(--amber-dim);
+    flex-shrink:0;
+    display:grid; place-items:center;
+  }
+  .titleblock .num{color:var(--amber-dim); font-weight:500;}
+  .titleblock .rule{flex:1; height:1px; background:var(--paper-line);}
+
+  .titleblock.on-dark{color:var(--cyan-dim);}
+  .titleblock.on-dark::before{border-color:var(--cyan);}
+  .titleblock.on-dark .num{color:var(--cyan);}
+  .titleblock.on-dark .rule{background:var(--navy-line);}
+
+  /* ===== Nav ===== */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(15,27,36,0.94);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--navy-line);
+  }
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    max-width:1180px; margin:0 auto; padding:18px 32px;
+  }
+  .logo{
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:700; font-size:24px; letter-spacing:0.04em;
+    color:#fff; display:flex; align-items:baseline; gap:8px;
+  }
+  .logo span{color:var(--amber); font-size:14px; font-family:'IBM Plex Mono',monospace; letter-spacing:0.1em;}
+  .navlinks{display:flex; gap:34px; font-size:14px; letter-spacing:0.03em; color:#C4CDD4;}
+  .navlinks a{transition:color .15s;}
+  .navlinks a:hover{color:var(--amber);}
+  .nav-cta{
+    border:1px solid var(--amber-dim); color:var(--amber);
+    padding:9px 18px; font-size:13px; letter-spacing:0.06em;
+    text-transform:uppercase; font-family:'IBM Plex Mono',monospace;
+    transition:all .15s;
+  }
+  .nav-cta:hover{background:var(--amber); color:var(--navy-deep); border-color:var(--amber);}
+  .navlinks-mobile{display:none;}
+
+  /* ===== Hero ===== */
+  .hero{
+    background:
+      linear-gradient(var(--navy-line) 1px, transparent 1px) 0 0/48px 48px,
+      linear-gradient(90deg, var(--navy-line) 1px, transparent 1px) 0 0/48px 48px,
+      var(--navy);
+    color:#fff;
+    padding:88px 0 70px;
+    position:relative;
+    overflow:hidden;
+    border-bottom:1px solid var(--navy-line);
+  }
+  .hero .wrap{
+    display:grid; grid-template-columns:1.1fr 0.9fr; gap:40px; align-items:center;
+  }
+  .hero h1{
+    font-size:clamp(42px,5.4vw,68px);
+    line-height:0.98;
+    color:#fff;
+  }
+  .hero h1 em{
+    font-style:normal; color:var(--cyan);
+  }
+  .hero p.lede{
+    font-family:'Inter',sans-serif; font-weight:400;
+    font-size:17px; line-height:1.65;
+    color:#B9C5CD; max-width:480px;
+    margin:22px 0 32px;
+  }
+  .btnrow{display:flex; gap:16px; flex-wrap:wrap;}
+  .btn-primary{
+    background:var(--amber); color:var(--navy-deep);
+    padding:14px 26px; font-family:'IBM Plex Mono',monospace;
+    font-size:13px; text-transform:uppercase; letter-spacing:0.06em;
+    font-weight:500; transition:background .15s;
+  }
+  .btn-primary:hover{background:#F0B457;}
+  .btn-ghost{
+    border:1px solid var(--navy-line); color:#fff;
+    padding:14px 26px; font-family:'IBM Plex Mono',monospace;
+    font-size:13px; text-transform:uppercase; letter-spacing:0.06em;
+    transition:border-color .15s;
+  }
+  .btn-ghost:hover{border-color:var(--cyan);}
+  .hero-stats{
+    display:flex; gap:28px; margin-top:44px; flex-wrap:wrap;
+  }
+  .hero-stats div{border-left:2px solid var(--amber-dim); padding-left:12px;}
+  .hero-stats .n{font-family:'Barlow Condensed',sans-serif; font-size:30px; font-weight:600; color:#fff;}
+  .hero-stats .l{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--cyan-dim); text-transform:uppercase; letter-spacing:0.06em;}
+
+  .hero-art{position:relative;}
+
+  /* ===== Marquee software strip ===== */
+  .strip{
+    background:var(--navy-deep); border-bottom:1px solid var(--navy-line);
+    padding:16px 0; overflow:hidden;
+  }
+  .strip .track{
+    display:flex; gap:64px; white-space:nowrap;
+    font-family:'IBM Plex Mono',monospace; font-size:13px;
+    color:var(--cyan-dim); letter-spacing:0.08em; text-transform:uppercase;
+    animation:scroll 26s linear infinite;
+    width:max-content;
+  }
+  @keyframes scroll{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+
+  /* ===== Section generic ===== */
+  section{padding:96px 0;}
+  .section-head{
+    display:grid; grid-template-columns:1fr 1fr; gap:40px;
+    margin-bottom:56px; align-items:end;
+  }
+  .section-head h2{font-size:clamp(30px,3.6vw,44px); line-height:1.02;}
+  .section-head p{color:var(--ink-soft); font-size:15.5px; line-height:1.6;}
+
+  /* ===== Services ===== */
+  .services-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+    background:var(--paper-line); border:1px solid var(--paper-line);
+  }
+  .svc{
+    background:var(--paper); padding:34px 28px; position:relative;
+  }
+  .svc .idx{
+    font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--amber-dim);
+    margin-bottom:22px; display:block;
+  }
+  .svc h3{font-size:22px; margin-bottom:10px; color:var(--ink);}
+  .svc p{font-size:14.5px; color:var(--ink-soft); line-height:1.6;}
+  .svc svg{width:34px; height:34px; margin-bottom:18px; stroke:var(--navy); fill:none; stroke-width:1.4;}
+
+  /* ===== Process (dark) ===== */
+  .process{background:var(--navy-deep); color:#fff;}
+  .process .titleblock{color:var(--cyan-dim);}
+  .process .titleblock::before{border-color:var(--cyan);}
+  .process .titleblock .num{color:var(--cyan);}
+  .process .titleblock .rule{background:var(--navy-line);}
+  .process .section-head h2{color:#fff;}
+  .process .section-head p{color:#9AA7AE;}
+  .steps{
+    display:grid; grid-template-columns:repeat(5,1fr); gap:0;
+    border-top:1px solid var(--navy-line);
+  }
+  .step{
+    padding:30px 22px 30px 0; border-right:1px solid var(--navy-line);
+    position:relative;
+  }
+  .step:last-child{border-right:none;}
+  .step .n{
+    font-family:'Barlow Condensed',sans-serif; font-size:15px; color:var(--amber);
+    margin-bottom:14px;
+  }
+  .step h4{font-size:19px; color:#fff; margin-bottom:8px; font-family:'Barlow Condensed',sans-serif; text-transform:uppercase;}
+  .step p{font-size:13.5px; color:#9AA7AE; line-height:1.55;}
+
+  /* ===== Why / stats band ===== */
+  .band{
+    background:var(--paper); border-top:1px solid var(--paper-line); border-bottom:1px solid var(--paper-line);
+    padding:56px 0;
+  }
+  .band .wrap{display:grid; grid-template-columns:repeat(4,1fr); gap:30px;}
+  .band .stat .n{font-family:'Barlow Condensed',sans-serif; font-size:52px; font-weight:600; color:var(--navy); line-height:1;}
+  .band .stat .n span{color:var(--amber-dim); font-size:28px;}
+  .band .stat .l{font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.05em; margin-top:8px;}
+
+  /* ===== Projects ===== */
+  .proj-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:22px;}
+  .proj{
+    border:1px solid var(--paper-line); background:#F5F3EC;
+    padding:30px; position:relative; overflow:hidden;
+  }
+  .proj .tag{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--amber-dim); text-transform:uppercase; letter-spacing:0.06em;}
+  .proj h3{font-size:24px; margin:10px 0 10px;}
+  .proj p{color:var(--ink-soft); font-size:14px; line-height:1.6; margin-bottom:16px;}
+  .proj .meta{display:flex; gap:20px; font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-soft); border-top:1px solid var(--paper-line); padding-top:14px;}
+  .proj .meta b{color:var(--ink); font-weight:500;}
+
+  /* ===== Contact ===== */
+  .contact{background:var(--navy); color:#fff; position:relative;
+    background-image:
+      linear-gradient(var(--navy-line) 1px, transparent 1px) 0 0/48px 48px,
+      linear-gradient(90deg, var(--navy-line) 1px, transparent 1px) 0 0/48px 48px;
+  }
+  .contact .titleblock{color:var(--cyan-dim);}
+  .contact .titleblock::before{border-color:var(--cyan);}
+  .contact .titleblock .num{color:var(--cyan);}
+  .contact .titleblock .rule{background:var(--navy-line);}
+  .contact-grid{display:grid; grid-template-columns:1fr 1fr; gap:60px;}
+  .contact h2{color:#fff; font-size:clamp(30px,3.6vw,44px); margin-bottom:18px;}
+  .contact p.lede{color:#AEB8BF; font-size:15.5px; line-height:1.65; max-width:440px; margin-bottom:30px;}
+  .contact-info div{margin-bottom:18px;}
+  .contact-info .l{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--cyan-dim); text-transform:uppercase; letter-spacing:0.06em;}
+  .contact-info .v{font-size:16px; margin-top:4px;}
+
+  form{display:flex; flex-direction:column; gap:16px;}
+  .field{display:flex; flex-direction:column; gap:6px;}
+  .field label{font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--cyan-dim);}
+  .field input, .field textarea, .field select{
+    background:rgba(255,255,255,0.04);
+    border:1px solid var(--navy-line);
+    color:#fff; padding:12px 14px; font-family:'Inter',sans-serif; font-size:14px;
+    outline:none; transition:border-color .15s;
+  }
+  .field input:focus, .field textarea:focus, .field select:focus{border-color:var(--amber);}
+  .field textarea{resize:vertical; min-height:90px;}
+  .submit-row{display:flex; align-items:center; gap:16px; margin-top:6px;}
+  .form-note{font-size:12px; color:#8B98A0;}
+
+  footer{
+    background:var(--navy-deep); color:#7A868D; padding:32px 0;
+    border-top:1px solid var(--navy-line);
+  }
+  footer .wrap{display:flex; justify-content:space-between; align-items:center; font-size:12.5px; flex-wrap:wrap; gap:12px;}
+  footer .flinks{display:flex; gap:22px;}
+  footer .flinks a:hover{color:var(--cyan);}
+
+  @media (max-width:900px){
+    .hero .wrap{grid-template-columns:1fr;}
+    .hero-art{order:-1;}
+    .navlinks{display:none;}
+    .services-grid{grid-template-columns:1fr;}
+    .steps{grid-template-columns:repeat(2,1fr);}
+    .step{border-right:none; border-bottom:1px solid var(--navy-line);}
+    .band .wrap{grid-template-columns:repeat(2,1fr);}
+    .section-head{grid-template-columns:1fr;}
+    .proj-grid{grid-template-columns:1fr;}
+    .contact-grid{grid-template-columns:1fr;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .strip .track{animation:none;}
+    html{scroll-behavior:auto;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <div class="logo">BEAMVEX <span>STEEL DETAILING</span></div>
+    <div class="navlinks">
+      <a href="#services">Services</a>
+      <a href="#process">Process</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <a href="#contact" class="nav-cta">Request a Quote</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <div class="titleblock on-dark"><span class="num">DWG 01</span><span>Detailing that fabricators trust</span><span class="rule"></span></div>
+      <h1>Shop drawings<br>built to hold <em>tolerance</em>,<br>not just intent.</h1>
+      <p class="lede">Beamvex is a structural and miscellaneous steel detailing studio. We turn engineering intent into fabrication-ready, erection-ready drawings — modeled in Tekla and SDS/2, checked against connection design, and delivered on your schedule.</p>
+      <div class="btnrow">
+        <a href="#contact" class="btn-primary">Request a Quote</a>
+        <a href="#services" class="btn-ghost">See Services</a>
+      </div>
+      <div class="hero-stats">
+        <div><div class="n">14+</div><div class="l">Years Detailing</div></div>
+        <div><div class="n">2,300+</div><div class="l">Projects Shipped</div></div>
+        <div><div class="n">US / UK / AU</div><div class="l">Markets Served</div></div>
+      </div>
+    </div>
+    <div class="hero-art">
+      <svg viewBox="0 0 460 460" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="dim" markerWidth="6" markerHeight="6" refX="3" refY="3">
+            <circle cx="3" cy="3" r="1.4" fill="#8FC1DE"/>
+          </marker>
+        </defs>
+        <!-- isometric column + beam moment connection line art -->
+        <g fill="none" stroke="#8FC1DE" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round">
+          <!-- column -->
+          <path d="M170 40 L170 300 L210 320 L210 60 Z" />
+          <path d="M170 40 L210 60" />
+          <path d="M170 300 L210 320" opacity="0.6"/>
+          <!-- flanges hint lines -->
+          <path d="M150 50 L170 40 M150 290 L170 300" opacity="0.5"/>
+          <!-- beam -->
+          <path d="M210 150 L400 190 L400 230 L210 190 Z" />
+          <path d="M210 150 L210 190" opacity="0.6"/>
+          <path d="M400 190 L430 205 M400 230 L430 245" opacity="0.5"/>
+          <!-- bolted end plate connection detail -->
+          <g stroke="#E3A23D">
+            <circle cx="215" cy="160" r="3"/>
+            <circle cx="215" cy="180" r="3"/>
+            <circle cx="222" cy="163" r="3"/>
+            <circle cx="222" cy="183" r="3"/>
+          </g>
+          <!-- dimension lines -->
+          <path d="M100 40 L100 300" stroke="#5A87A0" stroke-dasharray="2 4"/>
+          <path d="M92 40 L108 40 M92 300 L108 300" stroke="#5A87A0"/>
+          <path d="M210 340 L400 340" stroke="#5A87A0" stroke-dasharray="2 4"/>
+          <path d="M210 332 L210 348 M400 332 L400 348" stroke="#5A87A0"/>
+          <!-- baseplate -->
+          <path d="M150 300 L230 320 L230 332 L150 312 Z" opacity="0.7"/>
+          <g stroke="#E3A23D" opacity="0.85">
+            <circle cx="160" cy="308" r="2.6"/>
+            <circle cx="220" cy="325" r="2.6"/>
+            <circle cx="160" cy="320" r="2.6" opacity="0"/>
+          </g>
+        </g>
+        <text x="100" y="24" fill="#5A87A0" font-family="IBM Plex Mono, monospace" font-size="11">W14x90</text>
+        <text x="210" y="365" fill="#5A87A0" font-family="IBM Plex Mono, monospace" font-size="11">L = 12'-6"</text>
+        <text x="315" y="175" fill="#5A87A0" font-family="IBM Plex Mono, monospace" font-size="11">MOM. CONN.</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<div class="strip">
+  <div class="track">
+    <span>TEKLA STRUCTURES</span><span>SDS/2</span><span>ADVANCE STEEL</span><span>AUTOCAD</span><span>REVIT</span><span>BIM 360 / ACC</span><span>NAVISWORKS</span><span>AISC 360</span>
+    <span>TEKLA STRUCTURES</span><span>SDS/2</span><span>ADVANCE STEEL</span><span>AUTOCAD</span><span>REVIT</span><span>BIM 360 / ACC</span><span>NAVISWORKS</span><span>AISC 360</span>
+  </div>
+</div>
+
+<section id="services">
+  <div class="wrap">
+    <div class="titleblock"><span class="num">DWG 02</span><span>Scope of Work</span><span class="rule"></span></div>
+    <div class="section-head">
+      <h2>Detailing services, from model to fabrication floor.</h2>
+      <p>Every deliverable is built to your connection standards and issued against a revision-controlled drawing register — so what leaves our shop matches what gets welded on site.</p>
+    </div>
+    <div class="services-grid">
+      <div class="svc">
+        <span class="idx">01</span>
+        <svg viewBox="0 0 24 24"><path d="M3 20 L3 8 L12 3 L21 8 L21 20 Z"/><path d="M3 8 L12 13 L21 8"/><path d="M12 13 L12 20"/></svg>
+        <h3>Structural Steel Detailing</h3>
+        <p>Full 3D modeling and shop/erection drawings for primary structural frames, complete with connection design coordination.</p>
+      </div>
+      <div class="svc">
+        <span class="idx">02</span>
+        <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="1"/><path d="M4 10 L20 10 M10 4 L10 20"/></svg>
+        <h3>Miscellaneous Steel</h3>
+        <p>Stairs, handrails, ladders, platforms and embeds detailed to code — the small members that hold up an inspection.</p>
+      </div>
+      <div class="svc">
+        <span class="idx">03</span>
+        <svg viewBox="0 0 24 24"><circle cx="7" cy="17" r="2"/><circle cx="17" cy="7" r="2"/><path d="M8.5 15.5 L15.5 8.5"/></svg>
+        <h3>Connection Design</h3>
+        <p>PE-stamped connection calculations across US, Canadian, and Australian codes, delivered alongside the detail set.</p>
+      </div>
+      <div class="svc">
+        <span class="idx">04</span>
+        <svg viewBox="0 0 24 24"><path d="M4 4 L20 4 L20 20 L4 20 Z"/><path d="M4 9 L20 9 M9 4 L9 20 M14 4 L14 20"/></svg>
+        <h3>BIM / 3D Coordination</h3>
+        <p>Federated Tekla and Revit models with clash detection, ready to hand off into your BIM 360 or ACC environment.</p>
+      </div>
+      <div class="svc">
+        <span class="idx">05</span>
+        <svg viewBox="0 0 24 24"><path d="M3 12 L9 12 L11 6 L14 18 L16 12 L21 12"/></svg>
+        <h3>Erection Drawings</h3>
+        <p>Sequenced erection plans and piece marks written for the crew on the ground, not just the model in the office.</p>
+      </div>
+      <div class="svc">
+        <span class="idx">06</span>
+        <svg viewBox="0 0 24 24"><path d="M4 17 L10 11 L14 15 L20 7"/><path d="M20 12 L20 7 L15 7"/></svg>
+        <h3>Material Take-off &amp; NC1/2</h3>
+        <p>Accurate bill of materials and DXF/NC files for CNC fabrication, cut lists, and procurement sign-off.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="process" id="process">
+  <div class="wrap">
+    <div class="titleblock"><span class="num">DWG 03</span><span>Workflow</span><span class="rule"></span></div>
+    <div class="section-head">
+      <h2>From RFQ to<br>issued-for-construction.</h2>
+      <p>A fixed five-stage workflow, the same on every job — so your PM always knows exactly where the drawing set stands.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="n">01</div><h4>Takeoff</h4><p>We review IFC drawings, specs, and connection standards, and scope the job with you before modeling starts.</p></div>
+      <div class="step"><div class="n">02</div><h4>Modeling</h4><p>Full 3D model built in Tekla or SDS/2, checked against loads and clearances as it's built, not after.</p></div>
+      <div class="step"><div class="n">03</div><h4>Connection Check</h4><p>Connections verified against your governing code, with calcs available on request.</p></div>
+      <div class="step"><div class="n">04</div><h4>Drawing Issue</h4><p>Shop and erection drawings issued for review with a full revision log and RFI tracking.</p></div>
+      <div class="step"><div class="n">05</div><h4>Revise &amp; Release</h4><p>Markups turned around fast, drawings released IFC/IFF with a clean audit trail.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="band">
+  <div class="wrap">
+    <div class="stat"><div class="n">14<span>yrs</span></div><div class="l">In Business</div></div>
+    <div class="stat"><div class="n">2,300<span>+</span></div><div class="l">Projects Delivered</div></div>
+    <div class="stat"><div class="n">40<span>+</span></div><div class="l">Detailers on Staff</div></div>
+    <div class="stat"><div class="n">98<span>%</span></div><div class="l">On-Time Issue Rate</div></div>
+  </div>
+</div>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="titleblock"><span class="num">DWG 04</span><span>Recent Work</span><span class="rule"></span></div>
+    <div class="section-head">
+      <h2>A sample of what's crossed the drafting table.</h2>
+      <p>Warehouse frames, institutional canopies, industrial platforms — across primary and miscellaneous steel.</p>
+    </div>
+    <div class="proj-grid">
+      <div class="proj">
+        <span class="tag">Distribution Center</span>
+        <h3>1.1M sq.ft Fulfillment Frame</h3>
+        <p>Full structural steel detailing for a cross-dock warehouse, including mezzanine and dock canopy miscellaneous steel.</p>
+        <div class="meta"><span><b>3,400t</b> steel</span><span><b>Tekla</b></span><span><b>Texas, US</b></span></div>
+      </div>
+      <div class="proj">
+        <span class="tag">Healthcare</span>
+        <h3>Regional Hospital Expansion</h3>
+        <p>Structural frame plus stairs, guardrails and embed detailing coordinated against a live architectural model.</p>
+        <div class="meta"><span><b>610t</b> steel</span><span><b>SDS/2</b></span><span><b>Ontario, CA</b></span></div>
+      </div>
+      <div class="proj">
+        <span class="tag">Industrial</span>
+        <h3>Processing Plant Platforms</h3>
+        <p>Access platforms, pipe racks and ladder systems detailed to AS4100 for a food processing facility upgrade.</p>
+        <div class="meta"><span><b>380t</b> steel</span><span><b>Tekla</b></span><span><b>Queensland, AU</b></span></div>
+      </div>
+      <div class="proj">
+        <span class="tag">Commercial</span>
+        <h3>Six-Storey Office Frame</h3>
+        <p>Moment-frame structural detailing with connection design package stamped for permit submission.</p>
+        <div class="meta"><span><b>1,050t</b> steel</span><span><b>Tekla</b></span><span><b>London, UK</b></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="wrap">
+    <div class="titleblock on-dark"><span class="num">DWG 05</span><span>Get in Touch</span><span class="rule"></span></div>
+    <div class="contact-grid">
+      <div>
+        <h2>Send us your IFC set. We'll quote within 48 hours.</h2>
+        <p class="lede">Tell us the scope, tonnage, and target software, and we'll come back with a fixed-price quote and a realistic drawing schedule — no boilerplate.</p>
+        <div class="contact-info">
+          <div><div class="l">Email</div><div class="v">hr@beamvex.in</div></div>
+          <div><div class="l">Phone</div><div class="v">+1 732 444 7528</div></div>
+          <div><div class="l">Studio</div><div class="v">Hyderabad, Telangana, India</div></div>
+        </div>
+      </div>
+      <form onsubmit="event.preventDefault(); document.getElementById('formMsg').style.display='block'; this.reset();">
+        <div class="field">
+          <label for="name">Name</label>
+          <input id="name" type="text" placeholder="Your full name" required>
+        </div>
+        <div class="field">
+          <label for="company">Company</label>
+          <input id="company" type="text" placeholder="Fabricator / GC / Engineer">
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" type="email" placeholder="you@company.com" required>
+        </div>
+        <div class="field">
+          <label for="scope">Scope</label>
+          <select id="scope">
+            <option>Structural Steel Detailing</option>
+            <option>Miscellaneous Steel</option>
+            <option>Connection Design</option>
+            <option>BIM / 3D Coordination</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="msg">Project details</label>
+          <textarea id="msg" placeholder="Tonnage, software, timeline..."></textarea>
+        </div>
+        <div class="submit-row">
+          <button type="submit" class="btn-primary" style="border:none; cursor:pointer;">Send Request</button>
+          <span class="form-note" id="formMsg" style="display:none;">Thanks — we'll reply within 48 hours.</span>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>© <span id="year"></span> Beamvex Detailing Pvt. Ltd. — beamvex.in</div>
+    <div class="flinks">
+      <a href="#services">Services</a>
+      <a href="#process">Process</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
